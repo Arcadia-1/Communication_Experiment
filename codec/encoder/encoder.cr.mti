@@ -1,0 +1,15 @@
+D:/modelsim/comm/encoder/test.v {1 {vlog -work work -vopt D:/modelsim/comm/encoder/test.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module test
+
+Top level modules:
+	test
+
+} {} {}} D:/modelsim/comm/encoder/encoder.v {1 {vlog -work work -vopt D:/modelsim/comm/encoder/encoder.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module encoder
+
+Top level modules:
+	encoder
+
+} {} {}}

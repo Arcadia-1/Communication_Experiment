@@ -1,0 +1,41 @@
+m255
+K3
+13
+cModel Technology
+Z0 dD:\modelsim\comm\encoder
+vencoder
+Vd?3LV=]nggWU@E<LNoz_m1
+r1
+31
+IS3NS2gi>D3O?_ePSB1DRP2
+Z1 dD:\modelsim\comm\encoder
+w1572488498
+8D:/modelsim/comm/encoder/encoder.v
+FD:/modelsim/comm/encoder/encoder.v
+L0 3
+Z2 OE;L;10.1a;51
+Z3 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!s100 f[=^A;GASP^N:Nk;W`GjC2
+!s108 1572488505.500000
+!s107 D:/modelsim/comm/encoder/encoder.v|
+!s90 -reportprogress|300|-work|work|-vopt|D:/modelsim/comm/encoder/encoder.v|
+!i10b 1
+!s85 0
+vtest
+!i10b 1
+VaZHV5?UU5LdR5Ce1i7JFJ3
+r1
+!s85 0
+31
+I4Mkzf2h5C1j=XjAo@Q@@G2
+R1
+w1572529198
+8D:/modelsim/comm/encoder/test.v
+FD:/modelsim/comm/encoder/test.v
+L0 3
+R2
+R3
+!s100 9eAB9:Rn1giI]AL>nV5zk3
+!s108 1572529272.983000
+!s107 D:/modelsim/comm/encoder/test.v|
+!s90 -reportprogress|300|-work|work|-vopt|D:/modelsim/comm/encoder/test.v|
