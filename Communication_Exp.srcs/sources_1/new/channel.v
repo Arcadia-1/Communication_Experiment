@@ -21,13 +21,10 @@
 
 
 module channel(
-    input clk,
-    input data_i,
-    output reg data_o
+    input [`channel_width] data_i,
+    output [`channel_width] data_o
     );
     
-    always @ (posedge clk) begin
-        data_o <= data_i;
-    end
+    assign data_o = data_i;
     
 endmodule

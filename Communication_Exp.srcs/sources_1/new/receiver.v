@@ -22,12 +22,25 @@
 
 module receiver(
     input clk,
-    input data_i,
-    output [`DataBus] data_o   
+    input sysclk,
+    input reset,
+    input [`channel_width] data_i,
+    output data_o
     );
     
-    wire demodulated_signal;    
+//    wire demodulated_signal;
+//    demodulator DM(clk, data_i, demodulated_signal);
+
+    wire [`decode_width] decode_signal;
+    assign decode_signal = data_i;
     
-    demodulator DM(clk, data_i, demodulated_signal);
-    decoder DC(clk, demodulated_signal, data_o);
+   
+    decoder DC (
+        .out(data_o), 
+        .clk(clk), 
+        .sysclk(sysclk), 
+        .in(decode_signal), 
+        .reset(reset)
+    );
+    
 endmodule

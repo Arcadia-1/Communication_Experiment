@@ -20,30 +20,79 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module testbench(
-
+module testbench();
+    reg transmitter_clk;
+    reg transmitter_rst;
+    
+    reg receiver_clk;
+    reg receiver_LO;
+    reg receiver_rst;
+    
+    reg data_i;
+    wire data_o;
+    
+    initial begin
+        transmitter_clk = 1'b0;
+        receiver_clk = 1'b0;
+        
+        forever #`Period begin 
+            transmitter_clk = ~transmitter_clk;
+            receiver_clk = ~receiver_clk;
+        end
+    end
+    
+    initial begin
+        receiver_LO = 1'b0;
+        
+        forever #`OscillatorPeriod begin 
+            receiver_LO = ~receiver_LO;
+        end
+    end
+    
+    initial begin
+        transmitter_rst = `RstEnable;
+        receiver_rst = `ReceiverRstEnable;
+        
+        #20 begin
+            transmitter_rst = `RstDisable;
+            receiver_rst = `ReceiverRstDisable;
+        end
+        
+        #20 begin
+            transmitter_rst = `RstEnable;
+            receiver_rst = `ReceiverRstEnable;
+        end
+        
+        #20 begin
+            transmitter_rst = `RstDisable;
+            receiver_rst = `ReceiverRstDisable;
+        end
+        
+        #20 begin
+            transmitter_rst = `RstEnable;
+            receiver_rst = `ReceiverRstEnable;
+        end
+        
+        #20 begin
+            transmitter_rst = `RstDisable;
+            receiver_rst = `ReceiverRstDisable;
+        end
+    end
+    
+    initial begin
+        data_i = 1;
+        forever #`DataPeriod data_i = ~data_i;
+    end
+    
+    system SYS(
+        .transmitter_clk(transmitter_clk),
+        .transmitter_rst(transmitter_rst), 
+        .transmitter_data_i(data_i), 
+        
+        .receiver_clk(receiver_clk),     //receiver's clk
+        .receiver_LO(receiver_LO),      //receiver's local oscillator
+        .receiver_rst(receiver_rst),
+        .receiver_data_o(data_o)
     );
-    reg sysclk;
-    reg reset;
-    reg [`DataBus] data_i;
-    wire [`DataBus] data_o;
-    
-    initial begin
-        sysclk = 1'b0;
-        forever #5 sysclk = ~sysclk;
-    end
-    
-    initial begin
-        reset = `RstEnable;
-        #20 reset = `RstDisable;
-//        #20000000 $stop;
-    end
-    
-    initial begin
-        data_i = `DataWidth'b0001;
-        forever #24 data_i = data_i + 1;
-    end
-    
-    system SYS(sysclk, reset, data_i, data_o);
     
 endmodule

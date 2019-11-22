@@ -22,13 +22,21 @@
 
 module transmitter(
     input clk,
-    input [`DataBus] data_i,
-    output data_o   
+    input reset,
+    input data_i,
+    output [`channel_width] data_o   
     );
     
-    wire encoded_signal;
+    wire [`channel_width] encoded_signal;
     
-    encoder EC(clk, data_i, encoded_signal);
-    modulator M(clk, encoded_signal, data_o);
+    encoder EC(
+        .clk(clk),
+        .in(data_i),
+        .out(encoded_signal),
+        .reset(reset)
+    );    
+    assign data_o = encoded_signal;
+    
+//    modulator M(clk, encoded_signal, data_o);
     
 endmodule

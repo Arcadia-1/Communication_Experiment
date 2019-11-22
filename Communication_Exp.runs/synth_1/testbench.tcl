@@ -17,6 +17,10 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param synth.incrementalSynthesisCache C:/Users/hasee/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-17236-DESKTOP-JQEVVA5/incrSyn
+set_msg_config -id {Common 17-41} -limit 10000000
+set_msg_config -id {Synth 8-256} -limit 10000
+set_msg_config -id {Synth 8-638} -limit 10000
 create_project -in_memory -part xc7k70tfbv676-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -30,10 +34,8 @@ set_property ip_output_repo e:/Testfield/Communication_Exp/Communication_Exp.cac
 set_property ip_cache_permissions {read write} [current_project]
 read_verilog -library xil_defaultlib {
   E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/defines.v
-  E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/decoder.v
-  E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/demodulator.v
-  E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/encoder.v
-  E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/modulator.v
+  E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/channel.v
+  E:/Testfield/Communication_Exp/codec/encoder/encoder.v
   E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/receiver.v
   E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/system.v
   E:/Testfield/Communication_Exp/Communication_Exp.srcs/sources_1/new/transmitter.v

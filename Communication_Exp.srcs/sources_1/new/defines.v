@@ -27,16 +27,26 @@ module defines;
     `define RstEnable           1'b1    //reset enable
     `define RstDisable          1'b0    //reset disable
     
-    `define DataWidth           4       //exterior data width = 4
+    `define ReceiverRstEnable   1'b0    //reset enable
+    `define ReceiverRstDisable  1'b1    //reset disable
+    
+    `define DataWidth           0       //exterior data width = 4
     `define DataBus             `DataWidth:0     //
-        
+    
+    //simulation
+    `define Period              64
+    `define DataPeriod          148
+    `define OscillatorPeriod    1
+    
+    
     //encoder
     
-    //decoder
+    //receiver
+    `define decode_width        1:0
     
-    //modulator
     
-    //demodulator
+    //channel
+    `define channel_width       1:0
     
     
 endmodule

@@ -33,8 +33,8 @@ module min_getter(out, in0, in1, in2, in3);
     assign out = (min01 < min23)? min01 : min23;
 endmodule
 
-module decoder(out, en, clk, sysclk, in, reset);
-    output o; // output
+module decoder(out, enable, clk, sysclk, in, reset);
+    output out; // output
     output reg enable; // whether the output could be used, could be ignored
     input clk, sysclk; // it would be better if sysclk is 64X faster than clk
     input [1:0] in; // 2 bit input
@@ -171,8 +171,9 @@ module decoder(out, en, clk, sysclk, in, reset);
                 buf_len <= buf_len + counter_record + 1;
             end
         end
-
-    always @(negedge reset or negedge clk) begin
+        
+    always @(negedge reset or posedge clk) begin
+    //always @(negedge reset or negedge clk) begin
         if (~reset) begin
             enable <= 1'b0;
         end

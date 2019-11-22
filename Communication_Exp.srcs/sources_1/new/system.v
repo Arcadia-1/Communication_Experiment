@@ -21,25 +21,38 @@
 
 
 module system(
-    input clk,
-    input rst,
-    input [`DataBus] data_i,
-    output [`DataBus] data_o
+    input transmitter_clk,
+    input transmitter_rst,
+    input transmitter_data_i,
+    
+    //receiver
+    input receiver_clk,     //receiver's clk
+    input receiver_LO,      //receiver's local oscillator
+    input receiver_rst,
+    output receiver_data_o
     );
     
-    wire signal_channel_i;
-    wire signal_channel_o;
+    wire [`channel_width] signal_channel_i;
+    wire [`channel_width] signal_channel_o;
+        
+    transmitter TX(
+        .clk(transmitter_clk),
+        .reset(transmitter_rst),
+        .data_i(transmitter_data_i),
+        .data_o(signal_channel_i)
+    );   
     
-    always @ (posedge clk) begin
-        if (rst == `RstEnable) begin
-            ;
-        end 
-    end
+    channel CH(
+        .data_i(signal_channel_i),
+        .data_o(signal_channel_o)
+    );
     
-    transmitter TX(clk, data_i, signal_channel_i);
-    
-    channel CH(clk, signal_channel_i, signal_channel_o);
-    
-    receiver RX(clk, signal_channel_o, data_o);
+    receiver RX(
+        .clk(receiver_clk),
+        .sysclk(receiver_LO),
+        .reset(receiver_rst),
+        .data_i(signal_channel_o),
+        .data_o(receiver_data_o)
+    );
     
 endmodule

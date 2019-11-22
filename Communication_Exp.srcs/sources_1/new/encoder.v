@@ -1,34 +1,17 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2019/10/25 19:31:19
-// Design Name: 
-// Module Name: encoder
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+`timescale 1ns/1ns
 
+module encoder(out, clk, in, reset);
+    output [1:0] out;
+    input clk, in, reset;
 
-module encoder(
-    input clk,
-    input [`DataBus] data_i,
-    output reg data_o    
-    );
-    
-    //Your code here
-    always @ (posedge clk) begin
-        data_o <= data_i[0];
-    end
-    
+    reg [2:0] buffer;
+
+    always @(negedge reset or posedge clk)
+        if (reset)
+            buffer <= 3'h0;
+        else
+            buffer <= {buffer[1:0], in};
+
+    assign out[1] = ^buffer;
+    assign out[0] = buffer[2] ^ buffer[0];
 endmodule
