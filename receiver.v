@@ -24,12 +24,15 @@ module receiver(
     input clk,
     input sysclk,
     input reset,
-    input [`channel_width] data_i,
+    input data_i,
     output data_o
     );
     
-//    wire demodulated_signal;
-//    demodulator DM(clk, data_i, demodulated_signal);
+    wire demodulated_signal;
+    demodulator DM(clk, data_i, demodulated_signal);
+    
+    
+    
 
     wire [`decode_width] decode_signal;
     assign decode_signal = data_i;

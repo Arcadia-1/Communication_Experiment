@@ -33,10 +33,13 @@ module defines;
     `define DataWidth           0       //exterior data width = 4
     `define DataBus             `DataWidth:0     //
     
+    `define Mwidth              3:0     //width of M-sequence generator
+    
     //simulation
     `define Period              64
     `define DataPeriod          128
     `define OscillatorPeriod    1
+    `define ResetPeriod         128
     
     
     //encoder

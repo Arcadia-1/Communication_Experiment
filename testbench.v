@@ -60,27 +60,27 @@ module testbench();
         transmitter_rst = `RstEnable;
         receiver_rst = `ReceiverRstEnable;
         
-        #2 begin
+        #`ResetPeriod begin
             transmitter_rst = `RstDisable;
             receiver_rst = `ReceiverRstDisable;
         end
         
-        #2 begin
+        #`ResetPeriod begin
             transmitter_rst = `RstEnable;
             receiver_rst = `ReceiverRstEnable;
         end
         
-        #2 begin
+        #`ResetPeriod begin
             transmitter_rst = `RstDisable;
             receiver_rst = `ReceiverRstDisable;
         end
         
-        #2 begin
+        #`ResetPeriod begin
             transmitter_rst = `RstEnable;
             receiver_rst = `ReceiverRstEnable;
         end
         
-        #2 begin
+        #`ResetPeriod begin
             transmitter_rst = `RstDisable;
             receiver_rst = `ReceiverRstDisable;
         end
@@ -89,20 +89,12 @@ module testbench();
         forever begin
             #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 0;
             #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
+            #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 0;
         end
     end
     

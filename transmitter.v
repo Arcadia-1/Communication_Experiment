@@ -24,7 +24,7 @@ module transmitter(
     input clk,
     input reset,
     input data_i,
-    output [`channel_width] data_o   
+    output data_o   
     );
     
     wire [`channel_width] encoded_signal;
@@ -35,8 +35,12 @@ module transmitter(
         .out(encoded_signal),
         .reset(reset)
     );    
-    assign data_o = encoded_signal;
     
-//    modulator M(clk, encoded_signal, data_o);
+    modulator M(
+        .clk(clk),        
+        .reset(reset),
+        .in(encoded_signal),
+        .out(data_o)    
+   );    
     
 endmodule

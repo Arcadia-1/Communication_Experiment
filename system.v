@@ -32,9 +32,18 @@ module system(
     output receiver_data_o
     );
     
+    wire m_sequence_out;
+    wire [`Mwidth] m_sequence_reg;
     wire [`channel_width] signal_channel_i;
     wire [`channel_width] signal_channel_o;
-        
+                     
+    M_sequence MS(
+        .sys_clk(transmitter_clk),
+        .sys_rst_n(transmitter_rst),
+        .out(m_sequence_out),
+        .shift(m_sequence_reg)
+    );
+    
     transmitter TX(
         .clk(transmitter_clk),
         .reset(transmitter_rst),
