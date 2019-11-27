@@ -28,16 +28,16 @@ module receiver(
     output data_o
     );
     
-    wire demodulated_signal;
-    demodulator DM(clk, data_i, demodulated_signal);
     
     
-    
-
     wire [`decode_width] decode_signal;
-    assign decode_signal = data_i;
     
-   
+    demodulator DM(
+        .clk(sysclk),
+        .reset(reset),
+        .data_i(data_i),
+        .data_o(decode_signal));
+       
     decoder DC (
         .o(data_o), 
         .clk(clk), 

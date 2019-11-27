@@ -89,8 +89,17 @@ module testbench();
         forever begin
             #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 1;
+            #`DataPeriod data_i = 0;
             #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 1;
+            #`DataPeriod data_i = 1;
+            #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 0;
+            #`DataPeriod data_i = 1;
+            #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 1;
             #`DataPeriod data_i = 0;
             #`DataPeriod data_i = 0;

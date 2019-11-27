@@ -23,11 +23,12 @@
 module transmitter(
     input clk,
     input reset,
+    input sysclk,
     input data_i,
     output data_o   
     );
     
-    wire [`channel_width] encoded_signal;
+    wire [`decode_width] encoded_signal;
     
     encoder EC(
         .clk(clk),
@@ -37,8 +38,8 @@ module transmitter(
     );    
     
     modulator M(
-        .clk(clk),        
-        .reset(reset),
+        .clk(sysclk),        
+        .reset(~reset),
         .in(encoded_signal),
         .out(data_o)    
    );    

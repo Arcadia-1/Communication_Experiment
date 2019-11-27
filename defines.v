@@ -37,7 +37,7 @@ module defines;
     
     //simulation
     `define Period              64
-    `define DataPeriod          128
+    `define DataPeriod          1280
     `define OscillatorPeriod    1
     `define ResetPeriod         128
     
@@ -49,7 +49,7 @@ module defines;
     
     
     //channel
-    `define channel_width       1:0
+    `define channel_width       0:0
     
     
 endmodule

@@ -24,7 +24,7 @@ module demodulator(
     input clk,
     input reset,
     input data_i,
-    output reg [1:0]data_o
+    output reg [1:0] data_o
     );
     
     //Your code here
@@ -44,22 +44,22 @@ module demodulator(
             temp    <= 2'b00;
             temp_1  <= 2'b01;
 		end 
-        else if (in == 1'b1 && count_1 == 1'b0 && count_2 == 1'b0)
+        else if (data_i == 1'b1 && count_1 == 1'b0 && count_2 == 1'b0)
         begin
                 count_1 <= 1'b1;
         end
-        else if (in == 1'b0 && count_1 == 1'b1)
+        else if (data_i == 1'b0 && count_1 == 1'b1)
         begin
                 count_2 <= 1;
                 clk_count <= clk_count + 6'b1;
         end
-        else if (in == 1'b1 && count_1 == 1'b1 && count_2 == 1'b1)
+        else if (data_i == 1'b1 && count_1 == 1'b1 && count_2 == 1'b1)
         begin
             count_2 <= 1'b0;
             temp_1  <=  (clk_count < 6'd2)?2'b00:
                         (clk_count < 6'd4)?2'b01:
                         (clk_count < 6'd8)?2'b10:2'b11;
-            out <= (temp_1 == temp)?temp:temp_1;
+            data_o <= (temp_1 == temp)?temp:temp_1;
             temp <= temp_1;
             clk_count <= 6'b0;
         end

@@ -46,6 +46,7 @@ module system(
     
     transmitter TX(
         .clk(transmitter_clk),
+        .sysclk(receiver_LO),
         .reset(transmitter_rst),
         .data_i(transmitter_data_i),
         .data_o(signal_channel_i)
