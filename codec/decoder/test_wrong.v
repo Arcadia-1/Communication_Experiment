@@ -3,8 +3,8 @@
 module test_wrong;
     reg sysclk, clk, reset;
     reg [1:0] in;
-    wire [1:0] out;
-    wire en;
+    wire out;
+    wire enable;
     parameter h_sys_cycle = 3;
     parameter h_cycle = 50 * h_sys_cycle;
 
@@ -13,8 +13,8 @@ module test_wrong;
         .sysclk(sysclk),
         .in(in),
         .reset(reset),
-        .out(out),
-        .en(en)
+        .o(out),
+        .enable(enable)
     );
 
     initial begin

@@ -3,7 +3,7 @@
 module test;
     reg sysclk, clk, reset;
     reg [1:0] in;
-    wire [1:0] out;
+    wire out;
     wire en;
     parameter h_sys_cycle = 3;
     parameter h_cycle = 50 * h_sys_cycle;
@@ -13,8 +13,8 @@ module test;
         .sysclk(sysclk),
         .in(in),
         .reset(reset),
-        .out(out),
-        .en(en)
+        .o(out),
+        .enable(en)
     );
 
     initial begin

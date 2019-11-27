@@ -8,12 +8,12 @@ Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
 Top level modules:
 	decoder
 
-} {} {}} D:/modelsim/comm/decoder/test_wrong.v {1 {vlog -work work -vopt D:/modelsim/comm/decoder/test_wrong.v
+} {} {}} D:/modelsim/comm/decoder/tracker.v {1 {vlog -work work -vopt D:/modelsim/comm/decoder/tracker.v
 Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
--- Compiling module test_wrong
+-- Compiling module tracker
 
 Top level modules:
-	test_wrong
+	tracker
 
 } {} {}} D:/modelsim/comm/decoder/test.v {1 {vlog -work work -vopt D:/modelsim/comm/decoder/test.v
 Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
@@ -22,11 +22,32 @@ Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
 Top level modules:
 	test
 
-} {} {}} D:/modelsim/comm/decoder/tracker.v {1 {vlog -work work -vopt D:/modelsim/comm/decoder/tracker.v
+} {} {}} D:/modelsim/comm/decoder/test_wrong.v {1 {vlog -work work -vopt D:/modelsim/comm/decoder/test_wrong.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module test_wrong
+
+Top level modules:
+	test_wrong
+
+} {} {}} E:/comm/codec/decoder/tracker.v {1 {vlog -work work -vopt E:/comm/codec/decoder/tracker.v
 Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
 -- Compiling module tracker
 
 Top level modules:
 	tracker
+
+} {} {}} E:/comm/codec/decoder/test_wrong.v {1 {vlog -work work -vopt E:/comm/codec/decoder/test_wrong.v
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module test_wrong
+
+Top level modules:
+	test_wrong
+
+} {} {}} E:/comm/codec/decoder/test.v {1 {vlog -work work -vopt {E:\comm\codec\decoder\test.v}
+Model Technology ModelSim SE vlog 10.1a Compiler 2012.02 Feb 22 2012
+-- Compiling module test
+
+Top level modules:
+	test
 
 } {} {}}
