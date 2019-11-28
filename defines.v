@@ -36,10 +36,15 @@ module defines;
     `define Mwidth              3:0     //width of M-sequence generator
     
     //simulation
-    `define Period              64
+    `define ClkPeriod           64
+    
     `define DataPeriod          1280
+    
     `define OscillatorPeriod    1
-    `define ResetPeriod         128
+    
+    `define ResetPeriod_Transmitter      128
+    `define ResetPeriod_Receiver         200
+    
     
     
     //encoder

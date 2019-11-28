@@ -42,23 +42,29 @@ module decoder(o, enable, clk, sysclk, in, reset);
 
     parameter COUNTER_SIZE = 5;
     parameter BUFF_SIZE = 2 ** COUNTER_SIZE;
+    parameter OBUF_SIZE = 2*BUFF_SIZE;
 
     reg [15:0] err_buf [BUFF_SIZE-1:0];
     reg [7:0] state_buf [BUFF_SIZE-1:0];
-    reg [2*BUFF_SIZE-1:0] out_buf;
+    reg [OBUF_SIZE-1:0] out_buf;
 
     wire [15:0] out_err;
     wire [7:0] out_state;
 
     reg [COUNTER_SIZE-1:0] counter;
+    reg [COUNTER_SIZE-1:0] out_counter;
     reg [1:0] cur_state;
     reg [COUNTER_SIZE-1:0] counter_record;
-    reg [COUNTER_SIZE:0] buf_len;
+    reg [COUNTER_SIZE+1:0] buf_tail;
     reg en;
+    reg [1:0] cur_min;
 
     reg [3:0] minerr;
     reg [1:0] consecutive_counter;
     reg [15:0] prev_err;
+
+    reg out_signal;
+    reg setter;
 
     wire [15:0] in_err;
     wire [7:0] in_state;
@@ -67,10 +73,14 @@ module decoder(o, enable, clk, sysclk, in, reset);
     wire [1:0] argmin;
     wire out;
 
-    assign o = out_buf[0];
-    assign out_err = err_buf[counter-1];
-    assign out_state = state_buf[counter-1];
+    reg [COUNTER_SIZE:0] pointer;
+
+    assign o = out_buf[pointer];
+    assign out_err = err_buf[counter_record - out_counter];
+    assign out_state = state_buf[counter_record - out_counter];
     assign out = (cur_state[0])? 1'b1 : 1'b0;
+
+    assign out_cond = (&consecutive_counter) & minerr >= min;
 
     argmin_getter_cond amin_cond(
         .out(argmin_cond),
@@ -115,17 +125,20 @@ module decoder(o, enable, clk, sysclk, in, reset);
                 err_buf[i] <= 16'h0000;
                 state_buf[i] <= 8'h00;
             end
-            out_buf <= 32'h00000000;
             prev_err <= 16'h0000;
-            en <= 1'b0;
             counter <= 0;
-            cur_state <= 2'h0;
             minerr <= 4'h0;
             consecutive_counter <= 2'h0;
+            counter_record <= 0;
+            buf_tail <= 0;
+            pointer <= 0;
+            enable <= 1'b0;
+            out_signal <= 1'b0;
+            cur_min <= 2'b00;
         end else begin
-            if ((&consecutive_counter) & minerr >= min) begin
-                en <= 1'b1;
-                cur_state <= argmin;
+            if (out_cond) begin
+                cur_min <= argmin;
+                out_signal <= 1'b1;
                 consecutive_counter <= 2'h0;
                 counter_record <= counter;
                 minerr <= 4'h0;
@@ -135,55 +148,65 @@ module decoder(o, enable, clk, sysclk, in, reset);
                     in_err[7:4] - minerr, 
                     in_err[3:0] - minerr
                 };
+                counter <= 0;
             end else if (min > minerr) begin
+                out_signal <= 1'b0;
                 minerr <= min;
                 consecutive_counter <= 2'h0;
                 prev_err <= in_err;
+                counter <= counter + 1;
             end else begin
+                out_signal <= 1'b0;
                 consecutive_counter = consecutive_counter + 1;
                 prev_err <= in_err;
+                counter <= counter + 1;
             end
 
-            counter <= counter + 1;
             err_buf[counter] <= in_err;
             state_buf[counter] <= in_state;
+
+            if (|counter_record) begin
+                counter_record <= 0;
+                buf_tail <= (buf_tail + counter_record + 1) % OBUF_SIZE;
+            end
+
+            if (enable) begin
+                pointer <= pointer + 1;
+            end
+
+            if (buf_tail > 31)
+                enable <= 1'b1;
+
         end
 
     always @(negedge reset or posedge sysclk)
-        if (reset & en) begin
-            counter <= counter - 1;
-            out_buf[buf_len+counter-1] <= out;
-            if (counter > 1) begin
-                cur_state <= argmin_cond;
-            end else begin
-                en <= 1'b0;
-            end
-        end
-
-    always @(negedge reset or posedge clk)
         if (~reset) begin
-            counter_record <= 0;
-            buf_len <= 0;
+            out_buf <= 32'h00000000;
+            out_counter <= 0;
+            cur_state <= 2'h0;
+            en <= 1'b0;
+            setter <= 1'b0;
         end
         else begin
-            if (|counter_record) begin
-                counter_record <= 0;
-                buf_len <= buf_len + counter_record + 1;
+            if (out_signal & (~setter)) begin
+                setter <= 1;
+                en <= 1'b1;
+                cur_state <= cur_min;
             end
+            else if (en) begin
+                out_counter <= out_counter + 1;
+                out_buf[(buf_tail+counter_record-out_counter)%OBUF_SIZE] <= out;
+                if (out_counter < counter_record) begin
+                    cur_state <= argmin_cond;
+                end else begin
+                    out_counter <= 0;
+                    en <= 1'b0;
+                end 
+            end
+
+            if (~out_signal)
+                setter <= 1'b0;
         end
-        
-//    always @(negedge reset or posedge clk) begin
-    always @(negedge reset or negedge clk) begin
-        if (~reset) begin
-            enable <= 1'b0;
-        end
-        else if (buf_len > 31)
-            enable <= 1'b1;
-        if (enable) begin
-            out_buf <= out_buf >> 1;
-            buf_len <= buf_len - 1;
-        end
-    end
 
 endmodule
 

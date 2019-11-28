@@ -31,7 +31,7 @@ module M_sequence(
     reg rOut;
     wire feedback = rShift[ 0 ] ^ rShift[ 3 ];
     
-    always @( posedge sys_clk ) begin
+    always @( posedge sys_rst_n or posedge sys_clk ) begin
         if( sys_rst_n == `RstEnable ) begin //≥ı ºªØ
             rShift <= 'b0110;
             rOut <= 1'b0;

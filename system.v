@@ -23,7 +23,7 @@
 module system(
     input transmitter_clk,
     input transmitter_rst,
-    input transmitter_data_i,
+    input transmitter_data_clk,
     
     //receiver
     input receiver_clk,     //receiver's clk
@@ -32,15 +32,15 @@ module system(
     output receiver_data_o
     );
     
-    wire m_sequence_out;
+    wire transmitter_data_i;
     wire [`Mwidth] m_sequence_reg;
     wire [`channel_width] signal_channel_i;
     wire [`channel_width] signal_channel_o;
                      
     M_sequence MS(
-        .sys_clk(transmitter_clk),
+        .sys_clk(transmitter_data_clk),
         .sys_rst_n(transmitter_rst),
-        .out(m_sequence_out),
+        .out(transmitter_data_i),
         .shift(m_sequence_reg)
     );
     

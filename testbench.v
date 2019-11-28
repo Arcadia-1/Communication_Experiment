@@ -23,97 +23,51 @@
 module testbench();
     reg transmitter_clk;
     reg transmitter_rst;
+    reg transmitter_data_clk;
     
     reg receiver_clk;
     reg receiver_LO;
     reg receiver_rst;
     
-    reg data_i;
     wire data_o;
     
     initial begin
-        transmitter_clk = 1'b0;
         receiver_clk = 1'b0;
-        
-        forever #`Period begin 
-            transmitter_clk = ~transmitter_clk;
-            receiver_clk = ~receiver_clk;
-        end
+        forever #`ClkPeriod receiver_clk = ~receiver_clk;
     end
     
     initial begin
-        receiver_LO = 1'b0;
-        
-        forever #`OscillatorPeriod begin 
-            receiver_LO = ~receiver_LO;
-        end
+        transmitter_clk = 1'b0;
+        forever #`ClkPeriod transmitter_clk = ~transmitter_clk;
     end
     
     initial begin
-        
+        receiver_LO = 1'b0;        
+        forever #`OscillatorPeriod receiver_LO = ~receiver_LO;
     end
     
     initial begin
+        transmitter_rst = `RstEnable;        
+        repeat (3) #`ResetPeriod_Transmitter transmitter_rst = ~transmitter_rst;             
+    end
         
-        data_i = 0;
-        
-        transmitter_rst = `RstEnable;
-        receiver_rst = `ReceiverRstEnable;
-        
-        #`ResetPeriod begin
-            transmitter_rst = `RstDisable;
-            receiver_rst = `ReceiverRstDisable;
-        end
-        
-        #`ResetPeriod begin
-            transmitter_rst = `RstEnable;
-            receiver_rst = `ReceiverRstEnable;
-        end
-        
-        #`ResetPeriod begin
-            transmitter_rst = `RstDisable;
-            receiver_rst = `ReceiverRstDisable;
-        end
-        
-        #`ResetPeriod begin
-            transmitter_rst = `RstEnable;
-            receiver_rst = `ReceiverRstEnable;
-        end
-        
-        #`ResetPeriod begin
-            transmitter_rst = `RstDisable;
-            receiver_rst = `ReceiverRstDisable;
-        end
-        
-        
-        forever begin
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 1;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-            #`DataPeriod data_i = 0;
-        end
+    initial begin        
+        receiver_rst = `ReceiverRstEnable;        
+        repeat (3) #`ResetPeriod_Receiver receiver_rst = ~receiver_rst;       
+    end
+    
+    initial begin
+        transmitter_data_clk = 0;
+        forever #`DataPeriod transmitter_data_clk = ~transmitter_data_clk;
     end
     
     system SYS(
         .transmitter_clk(transmitter_clk),
         .transmitter_rst(transmitter_rst), 
-        .transmitter_data_i(data_i), 
+        .transmitter_data_clk(transmitter_data_clk),    //m sequence's clk
         
         .receiver_clk(receiver_clk),     //receiver's clk
-        .receiver_LO(receiver_LO),      //receiver's local oscillator
+        .receiver_LO(receiver_LO),       //receiver's local oscillator
         .receiver_rst(receiver_rst),
         .receiver_data_o(data_o)
     );
