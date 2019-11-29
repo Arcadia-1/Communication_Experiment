@@ -21,12 +21,12 @@
 
 
 module system(
-    input transmitter_clk,
+    //input transmitter_clk,
     input transmitter_rst,
-    input transmitter_data_clk,
+    //input transmitter_data_clk,
     
     //receiver
-    input receiver_clk,     //receiver's clk
+    //input receiver_clk,     //receiver's clk
     input receiver_LO,      //receiver's local oscillator
     input receiver_rst,
     output receiver_data_o
@@ -36,7 +36,26 @@ module system(
     wire [`Mwidth] m_sequence_reg;
     wire [`channel_width] signal_channel_i;
     wire [`channel_width] signal_channel_o;
-                     
+    wire transmitter_clk;
+    wire transmitter_data_clk;
+    wire receiver_clk;
+
+    Divider divider_rclk(
+        .reset(receiver_rst),
+        .in(receiver_LO),
+        .out(receiver_clk),
+        .times(16)
+    );
+    
+    Divider divider_dataclk(
+        .reset(receiver_rst),
+        .in(receiver_clk),
+        .out(transmitter_data_clk),
+        .times(8)
+    );
+
+    assign transmitter_clk = receiver_clk;
+
     M_sequence MS(
         .sys_clk(transmitter_data_clk),
         .sys_rst_n(transmitter_rst),

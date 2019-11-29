@@ -62,11 +62,11 @@ module testbench();
     end
     
     system SYS(
-        .transmitter_clk(transmitter_clk),
+//        .transmitter_clk(transmitter_clk),
         .transmitter_rst(transmitter_rst), 
-        .transmitter_data_clk(transmitter_data_clk),    //m sequence's clk
+//        .transmitter_data_clk(transmitter_data_clk),    //m sequence's clk
         
-        .receiver_clk(receiver_clk),     //receiver's clk
+//        .receiver_clk(receiver_clk),     //receiver's clk
         .receiver_LO(receiver_LO),       //receiver's local oscillator
         .receiver_rst(receiver_rst),
         .receiver_data_o(data_o)

@@ -6,8 +6,8 @@ module encoder(out, clk, in, reset);
 
     reg [2:0] buffer;
 
-    always @(negedge reset or posedge clk)
-        if (~reset)
+    always @(posedge reset or posedge clk)
+        if (reset)
             buffer <= 3'h0;
         else
             buffer <= {buffer[1:0], in};
