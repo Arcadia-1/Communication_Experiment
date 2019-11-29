@@ -21,12 +21,9 @@
 
 
 module system(
-    //input transmitter_clk,
     input transmitter_rst,
-    //input transmitter_data_clk,
     
     //receiver
-    //input receiver_clk,     //receiver's clk
     input receiver_LO,      //receiver's local oscillator
     input receiver_rst,
     output receiver_data_o
