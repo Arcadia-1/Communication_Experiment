@@ -26,6 +26,7 @@ module testbench();
     reg receiver_rst;
     
     wire data_o;
+    reg channel_interrupt;
         
     initial begin
         receiver_LO = 1'b0;        
@@ -42,11 +43,21 @@ module testbench();
         repeat (3) #`ResetPeriod_Receiver receiver_rst = ~receiver_rst;       
     end    
     
+    initial begin
+        channel_interrupt = 0;
+        forever begin
+            #30000 channel_interrupt = 1;
+            #120000 channel_interrupt = 0;
+            
+        end
+    end
+    
     system SYS(
         .transmitter_rst(transmitter_rst),         
         .receiver_LO(receiver_LO),       //receiver's local oscillator
         .receiver_rst(receiver_rst),
-        .receiver_data_o(data_o)
+        .receiver_data_o(data_o),
+        .channel_interrupt(channel_interrupt)
     );
     
 endmodule

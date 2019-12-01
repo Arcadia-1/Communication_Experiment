@@ -22,10 +22,13 @@
 
 module channel(
     input [`channel_width] data_i,
-    output [`channel_width] data_o
+    output [`channel_width] data_o,
+    
+    input channel_interrupt,
+    output channel_led
     );
     
-    assign data_o = data_i;
-        
+    assign data_o = channel_interrupt ? 0:data_i;
+    assign channel_led = channel_interrupt;
     
 endmodule

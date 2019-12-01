@@ -20,29 +20,25 @@
 //////////////////////////////////////////////////////////////////////////////////
 `include "defines.v"
 
-module M_sequence(
-    input sys_clk,
-    input sys_rst_n,
-    output out,
-    output [`Mwidth] shift
-    );
+module M_sequence #(parameter N = 9)(
+    input wire clk, 
+    input wire reset,
+    output wire data_o
+);    
+    reg [N:0] shift_reg;
 
-    reg [`Mwidth] rShift;//4位移位寄存器
-    reg rOut;
-    wire feedback = rShift[ 0 ] ^ rShift[ 3 ];
-    
-    always @( posedge sys_rst_n or posedge sys_clk ) begin
-        if( sys_rst_n == `RstEnable ) begin //初始化
-            rShift <= 'b0110;
-            rOut <= 1'b0;
+//    wire feedback_value = r_reg[3] ^ r_reg[2] ^ r_reg[0];   //N = 3
+//    wire feedback_value = r_reg[4] ^ r_reg[3] ^ r_reg[0];   //N = 4    
+//    wire feedback_value = r_reg[5] ^ r_reg[3] ^ r_reg[0];   //N = 5, length = 28 (not 31)
+    wire feedback = shift_reg[9] ^ shift_reg[5] ^ shift_reg[0]; //N=9
+                        
+    always @(posedge clk, posedge reset) begin 
+        if (reset) begin
+            shift_reg <= 1;
         end else begin
-            rShift <= { feedback,rShift[ 3:1 ] }; //移位运算
-            rOut <= rShift[ 0 ];           
+            shift_reg <= {feedback,shift_reg[N:1]};
         end
     end
-
-    assign out= rOut;
-    assign shift = rShift;
     
-endmodule
-
+    assign data_o = shift_reg[0];
+endmodule  
