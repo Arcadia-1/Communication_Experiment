@@ -28,18 +28,10 @@ module system(
     input transmitter_rst,
     
     output m_sequence_out,
-    
-    output led_out_rst_t,   //transmitter reset display
-    output led_out_rst_r,   //receirver reset display
         
-    input channel_interrupt,     //error code control button
-    output channel_led      //error code display
+    input channel_interrupt     //error code control button
     );
-    
-    assign led_out_rst_t = transmitter_rst;
-	assign led_out_rst_r = receiver_rst;
-	 
-//    wire [`Mwidth] m_sequence_reg;
+    	 
     wire [`channel_width] signal_channel_i;
     wire [`channel_width] signal_channel_o;
     wire transmitter_clk;
@@ -47,33 +39,35 @@ module system(
     wire receiver_clk;
     
     wire number_right;
-    wire number_wrong;
-
-    Divider divider_rclk(
-        .reset(receiver_rst),
-        .in(receiver_LO),
-        .out(receiver_clk),
-        .times(128)
+    wire number_wrong;    
+    
+    wire transmitter_LO = receiver_LO;
+    
+    Divider divider_transmitter(
+        .reset(~transmitter_rst),.in(transmitter_LO),.out(transmitter_clk),
+        .times(10)
+    );
+    
+    Divider divider_receiver(
+        .reset(receiver_rst),.in(receiver_LO),.out(receiver_clk),
+        .times(4)
     );
     
     Divider divider_dataclk(
-        .reset(receiver_rst),
-        .in(receiver_clk),
-        .out(transmitter_data_clk),
-        .times(80)
+        .reset(~transmitter_rst),.in(transmitter_clk),.out(transmitter_data_clk),
+        .times(32)
     );
-
-	assign transmitter_clk = receiver_clk; 
+    
 	
 	M_sequence MS(
         .clk(transmitter_data_clk), 
         .reset(transmitter_rst),
         .data_o(m_sequence_out)
-	);
-	    
+	);	
+	
     transmitter TX(
         .clk(transmitter_clk),
-        .sysclk(receiver_LO),
+        .sysclk(transmitter_LO),
         .reset(transmitter_rst),
         .data_i(m_sequence_out),
         .data_o(signal_channel_i)
@@ -82,8 +76,7 @@ module system(
     channel CH(
         .data_i(signal_channel_i),
         .data_o(signal_channel_o),
-        .channel_interrupt(channel_interrupt),
-        .channel_led(channel_led)
+        .channel_interrupt(channel_interrupt)
     );
     
     receiver RX(
@@ -102,5 +95,5 @@ module system(
         .number_wrong(number_wrong),
         .rst(transmitter_rst)
     );
-    
+        
 endmodule

@@ -27,9 +27,7 @@ module M_sequence #(parameter N = 9)(
 );    
     reg [N:0] shift_reg;
 
-//    wire feedback_value = r_reg[3] ^ r_reg[2] ^ r_reg[0];   //N = 3
-//    wire feedback_value = r_reg[4] ^ r_reg[3] ^ r_reg[0];   //N = 4    
-//    wire feedback_value = r_reg[5] ^ r_reg[3] ^ r_reg[0];   //N = 5, length = 28 (not 31)
+//    wire feedback = shift_reg[4] ^ shift_reg[3] ^ shift_reg[0];   //N = 4    
     wire feedback = shift_reg[9] ^ shift_reg[5] ^ shift_reg[0]; //N=9
                         
     always @(posedge clk, posedge reset) begin 
